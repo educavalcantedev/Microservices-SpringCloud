@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="1" author="sha">
+        <sql>
+            CREATE TABLE course (
+            id serial PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            author VARCHAR(255) NOT NULL,
+            category VARCHAR(255),
+            publish_date DATE
+            );
+        </sql>
+        <rollback>
+            DROP TABLE course;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="sha">
+        <sql>
+            CREATE TABLE transaction (
+            id serial PRIMARY KEY,
+            course_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            date_of_issue TIMESTAMP
+            );
+        </sql>
+        <rollback>
+            DROP TABLE transaction;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="sha">
+        <sql>
+            INSERT INTO course (title, author, category, publish_date) VALUES
+                ('Microservices', 'Instructor 1', 'Programming', NOW());
+            INSERT INTO course (title, author, category, publish_date) VALUES
+                ('Java programming', 'Instructor 2', 'Programming', NOW());
+            INSERT INTO course (title, author, category, publish_date) VALUES
+                ('IOS', 'Instructor 3', 'Mobile', NOW());
+            INSERT INTO course (title, author, category, publish_date) VALUES
+                ('Android', 'Instructor 4', 'Mobile', NOW());
+        </sql>
+        <rollback>
+            TRUNCATE TABLE course;
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
